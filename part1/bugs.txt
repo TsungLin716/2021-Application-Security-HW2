@@ -1,0 +1,44 @@
+﻿ XSS Attack:
+
+From my CTF experience, I encountered a template injection attack which related to flask. Hence, I learned that whenever I want to do the code injection I might want to take a look at the template which used by the victim’s website. In this assignment, we are using Django so I start looking at the html files under the Templates directory. After studying the Django documents and other tutorials. I conclude three things that I could exploit for XSS attack and they are all related to unescaped variables:
+
+1.    Use of the ```| safe``` filter
+
+2.    Use of the ``` | safeseq``` filter
+
+3. ```{%autoescape off%}``` block
+
+
+I start searching if these features are applied in our program. Luckily, I was able to found the safe filter in gift.html and item-single.html which is ```{{director|safe}}```. And then, I tried to inject my own script in url using director value, I was able to inject a slice of javascript code as alert() to pop out a hello message. To fix it, it is really simple that I just remove the safe filter from both gift.html and item-single.html and it works.
+
+————————————————————————————————————————————
+SQL Injection Attack:
+
+
+First thing first, I looked at the tutorials and document which introducing the SQL injection attacks in Django. I was able to conclude four things that I could exploit for SQL Injection attacks:
+
+1. Django ```RawSQL``` queries
+
+2. The ```.raw``` Manager method
+
+3. The connection ```cursor```
+
+4. The QuerySet ```.extra``` method
+
+Basically, I learned that these methods of executing queries avoid the Django object Relational Mapper(ORM), they do not benefit from the automatic query parameterization that it provides, so we can use these features for SQL Injection attack.
+
+Now, I tried to search if there are any methods mentioned above been applied in the program. I was able to find that we use the raw queries for gift card file in the views.py under LegacySite. The queries specify that we select id from the signature value which I can try to do some trick there. Fortunately, professor gave us a hint about using ```UNION SELECT``` which narrows down the scope because there are many types of SQL Injection attack. I first created a gift card file and was able to find out that there is a signature value, I put the union select queries to ask for the admin’s password. After that, I submitted the file and the hashed password came up on the webpage.
+
+To fix it, I    applied the ORM in our code instead of the raw queries.
+
+———————————————————————————————————————————
+CSRF Attack:
+
+With the help of tutorial on Portswigger. I knew that I can exploit the CSRF attack and it is very simple since the site has no CSRF protection. I first created a html file with a form element in it which indicate a POST request, I then set up two hidden input which are the username and the amount value, and then I wrote a script ```document.forms[0].submit ``` to generate a cross-site request. After that, I go to the website and register for the malicious user correspond to the username I assigned in my malicious html file, then I logged in as another user and stop on that page, I drag malicious html file to it and it popped out a message told me that “the gift card was given to tester”.
+
+To fix it, I followed the instruction in Django documents that we put a CSRF tag in each form element and activate the CSRF middleware inside the settings.py file. 
+
+————————————————————————————————————————————
+Command Injection Attack:
+
+I had encountered a command injection attack at OSIRIS recruit challenge which I can inject the shell command as user input like “www.google.com;ls -al” to list out the files stored in the server database. Therefore, I looked for all the input field in this assignment to figure out which could be exploit. However, I failed until I see the homework2_notes which indicated that it is related to giftcardreader. I first generate a new gift card file and then modify the content to shell command. I submitted it and I was able to see that my command was successfully been executed.
