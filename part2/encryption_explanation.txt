@@ -1,0 +1,10 @@
+﻿Encypting the Database:
+
+To encrypt the database, I applied the recipes layer which is Fernet symmetric encryption for Django model fields. I import the library by adding ```from fernet_fields import EncyptedTextField``` inside the models.py and modified the variable ‘data’ inside the class of Card, I changed it to ```data = EncryptedTextField()``` to encrypt the data in the gift card file.
+
+————————————————————————————————————————————————————————————————
+
+
+Key Management(Storage):
+
+For the Key storage, I choose to keep the key in an environment variable. First thing first, I installed python decouple to store parameters in .env files. And then, I created a .env file under the GiftcardSite directory, I stored the assigned key into the .env file. Now, I go to the settings.py and import decouple by adding ```from decouple import config``` and used config to put the keys inside the .env file. By such, it makes the key can be called through seperate applications. The reason why I choose this method is that inside the settings.py, the key is hardcode in the script so that when I push the code to my repository, everyone else can observe my key. Therefore, I choose to store it in the environment variable to make sure that others can see it and I believe this is much safer than the original method.
