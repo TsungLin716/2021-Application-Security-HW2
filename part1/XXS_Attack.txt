@@ -1,1 +1,1 @@
-﻿    1. Localhost:8000/gift.html?director=<script>alert(“hello:)</script>
+Localhost:8000/gift.html?director=<script>alert(“hello:)</script>
