@@ -190,8 +190,8 @@ def use_card_view(request):
         print(card_data.strip())
         signature = json.loads(card_data)['records'][0]['signature']
         # signatures should be pretty unique, right?
-        #card_query = Card.objects.raw('select id from LegacySite_card where data = \'%s\'' % signature) origin quereies
-        card_query = Card.objects.filter(data = signature.encode()) #Applied ORM to fix the SQL Injection attack
+        card_query = Card.objects.raw('select id from LegacySite_card where data = \'%s\'' % signature)
+        #card_query = Card.objects.filter(data = signature.encode()) #Applied ORM to fix the SQL Injection attack
         user_cards = Card.objects.raw('select id, count(*) as count from LegacySite_card where LegacySite_card.user_id = %s' % str(request.user.id))
         card_query_string = ""
         for thing in card_query:
