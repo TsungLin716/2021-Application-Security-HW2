@@ -1,0 +1,2 @@
+﻿Python-decouple
+Django-fernet-fields==0.6
