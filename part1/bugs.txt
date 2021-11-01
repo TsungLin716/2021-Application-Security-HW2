@@ -1,4 +1,4 @@
-﻿ XSS Attack:
+ XSS Attack:
 
 From my CTF experience, I encountered a template injection attack which related to flask. Hence, I learned that whenever I want to do the code injection I might want to take a look at the template which used by the victim’s website. In this assignment, we are using Django so I start looking at the html files under the Templates directory. After studying the Django documents and other tutorials. I conclude three things that I could exploit for XSS attack and they are all related to unescaped variables:
 
@@ -41,4 +41,4 @@ To fix it, I followed the instruction in Django documents that we put a CSRF tag
 ————————————————————————————————————————————
 Command Injection Attack:
 
-I had encountered a command injection attack at OSIRIS recruit challenge which I can inject the shell command as user input like “www.google.com;ls -al” to list out the files stored in the server database. Therefore, I looked for all the input field in this assignment to figure out which could be exploit. However, I failed until I see the homework2_notes which indicated that it is related to giftcardreader. I first generate a new gift card file and then modify the content to shell command. I submitted it and I was able to see that my command was successfully been executed.
+I had encountered a command injection attack at OSIRIS recruit challenge which I can inject the shell command as user input like “127.0.0.1;ls -al” to list out the files stored in the server database. Therefore, I looked for all the input field in this assignment to figure out which could be exploit. I failed multiple times, and then I look at the view.py to see if there is anything I could exploit, somehow I found that when we used giftcardreader, we can input a string for our gift card name, so I tried it with "127.0.0.1;echo hello world". However, the results show me that my command works but it got merged into the whole card path with the end of "_2_parse.gftcard", so I add another semicolon to split my shell command. The attack succeed.
